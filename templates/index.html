@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="content custom-container">
+  <div class="container text-left">
+    <div class="row justify-content-center">
+      <div class="col-md-10 text-center">
+        <img src="{{ url_for('static', filename='images/logo-final-dark-theme-190x52.png') }}" alt="Company Logo"
+          class="logo">
+        <h2 class="mb-5 text-center">
+
+          {% if currentUser %}
+          <h3 class="name-font">Hi...{{ currentUser }}</h3>
+          {% else %}
+          <h3>Hi...</h3>
+          {% endif %}
+        </h2>
+        <form action="/" method="post" class="row">
+          {{ form.hidden_tag() }}
+          <div class="col-md-12">
+            {{ form.startdate.label }}<br>
+            <div id="inline_cal"></div>
+            {{ form.startdate(class="d-none", id="startdate") }}<br><br>
+            {{ form.submit(class_="btn btn-primary") }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var calendarElement = document.getElementById('inline_cal');
+    var inputElement = document.getElementById('startdate');
+    rome(calendarElement, { time: false, inputFormat: 'YYYY-MM-DD' }).on('data', function (value) {
+      inputElement.value = value;
+    });
+  });
+</script>
+{% endblock %}
+
+</html>

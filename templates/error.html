@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <!-- Bootstrap CSS link, assuming you are using Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Error!</h4>
+            <p>{{ error_message }}</p>
+            <hr>
+            <p class="mb-0">Please go back and fill in all required fields.</p>
+            <a href="/main" class="btn btn-primary mt-3">Go Back</a>
+        </div>
+    </div>
+</body>
+</html>

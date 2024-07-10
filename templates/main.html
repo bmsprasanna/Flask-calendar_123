@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2 class="mb-5 text-center">
+  {% if username %}
+  <h3 class="name-font">Hi... {{ username }}</h3>
+  {% else %}
+  <h3>Hi...</h3>
+  {% endif %}
+</h2>
+
+<!-- {% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="container mt-4">
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }}" role="alert">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %} -->
+
+<div class="container my-3 main-container">
+  <div class="d-flex align-items-center mb-3">
+    <div>
+      <img src="{{ url_for('static', filename='images/favicon.ico') }}" alt="Company Logo"
+        style="height: 40px; margin-right: 10px;">
+    </div>
+    <h2 class="mb-0" style="font-size: 25px;">Daily Production Report</h2>
+    <div>
+      <h6 class="mb-1" style="margin-left:680px;">{{ startdate }}</h6>
+    </div>
+  </div>
+
+  <form action="/main" method="POST">
+    <div class="row mb-3 justify-content-center">
+      <div class="col-md-4 mb-3 input-box">
+        <label for="user_name" class="form-label">User Name</label>
+        <select class="form-select" name="user_name" id="user_name">
+          <option selected disabled>Select User</option>
+          {% for option in username_options %}
+          <option value="{{ option }}">{{ option }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-3 input-box">
+        <label for="group_lead" class="form-label">Group Lead</label>
+        <input type="text" class="form-control" name="group_lead" id="group_lead" readonly>
+      </div>
+
+      <div class="col-md-4 mb-3 input-box">
+        <label for="project_name" class="form-label">Project Name</label>
+        <input type="text" class="form-control" name="project_name" id="project_name" readonly>
+      </div>
+    </div>
+
+    <div class="row mb-3 justify-content-center">
+      <div class="col-md-4 mb-3 input-box">
+        <label for="process_type" class="form-label">Process Type</label>
+        <select class="form-select" name="process_type" id="process_type">
+          <option selected disabled>Select Process</option>
+          {% for option in process_options %}
+          <option value="{{ option }}">{{ option }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-3 input-box">
+        <label for="count" class="form-label">Count</label>
+        <input type="number" class="form-control" name="count" id="count">
+      </div>
+
+      <div class="col-md-4 mb-3 input-box">
+        <label for="comments" class="form-label">Comments</label>
+        <input type="text" class="form-control" name="comments" id="comments">
+      </div>
+    </div>
+
+    <div class="row mb-3 justify-content-center">
+      <div class="col-md-1 mb-3 input-box">
+        <button type="submit" class="btn btn-dark">
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<a href="/" class="btn ms-3">
+  <img src="{{ url_for('static', filename='images/left-arrow.png') }}" alt="Home"
+    style="height: 25px; margin-right: 5px;">
+  Back
+</a>
+<a href="/export" class="btn ms-3">
+  <img src="{{ url_for('static', filename='images/excel.png') }}" alt="Download"
+    style="height: 25px; margin-right: 5px;">
+  Export
+</a>
+
+<script>
+  const prname = document.getElementById('project_name');
+  const usernme = document.getElementById('user_name');
+  const date_selected = JSON.parse('{{ date_selected | safe }}');
+  const grouplead_selected = JSON.parse('{{ grouplead_selected | safe }}');
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const userNameSelect = document.getElementById('user_name');
+
+    userNameSelect.addEventListener('change', function () {
+      const selectedUser = userNameSelect.value;
+      // You can perform actions based on the selected value here
+      console.log('Selected user:', selectedUser);
+      const prname = date_selected[selectedUser];
+      const gpld = grouplead_selected[selectedUser];
+      projectNameTag = document.getElementById('project_name')
+      processTypeTag = document.getElementById('process_type')
+      commentsTag = document.getElementById('comments')
+      countTag = document.getElementById('count')
+      document.getElementById('group_lead').value = gpld;
+      if (prname == "AB") {
+        document.getElementById('project_name').value = "#NA";
+        document.getElementById('process_type').value = "OTH";
+        document.getElementById('comments').value = "Absent";
+        document.getElementById('count').value = "0";
+
+      } else if (prname == undefined) {
+        projectNameTag.removeAttribute('readonly');
+      } else {
+        document.getElementById('project_name').value = prname;
+      }
+    });
+  });
+
+
+</script>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    "{% for category, message in messages %}"
+    alert("{{ message }}");
+    "{% endfor %}"
+  });
+</script>
+{% endif %}
+{% endwith %}
+{% endblock %}
